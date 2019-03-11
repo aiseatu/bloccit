@@ -52,7 +52,50 @@ describe("Post", () => {
       });
     });
 
-    
+    it("should not create a post with missing title, body, or assigned topic", (done) => {
+      Post.create({
+        title: "Pros of Cryosleep during the long journey"
+      })
+      .then((post) => {
+        done();
+      })
+      .catch((err) => {
+        expect(err.message).toContain("Post.body cannot be null");
+        expect(err.message).toContain("Post.topicId cannot be null");
+        done();
+      })
+    });
+
+  });
+
+  describe("#setTopic()", () => {
+
+    it("should associate a topic and a post together", (done) => {
+      Topic.create({
+        title: "Challenges of interstellar travel",
+        description: "1. The Wi-Fi is terrible"
+      })
+      .then((newTopic) => {
+        expect(this.post.topicId).toBe(this.topic.id);
+        this.post.setTopic(newTopic)
+        .then((post) => {
+          expect(post.topicId).toBe(newTopic.id);
+          done();
+        });
+      })
+    });
+
+  });
+
+  describe("#getTopic()", () => {
+
+    it("should return the associated topic", (done) => {
+      this.post.getTopic()
+      .then((associatedTopic) => {
+        expect(associatedTopic.title).toBe("Expeditions to Alpha Centauri");
+        done();
+      });
+    });
 
   });
 
