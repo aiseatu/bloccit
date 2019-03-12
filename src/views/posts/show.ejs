@@ -14,6 +14,24 @@
         </form>
 
       <p><%= post.body %></p>
+      <hr>
+
+      <h1>Flairs</h1>
+
+      <ul class="list-group">
+        <% post.flairs.forEach((flair) => { %>
+          <li class="list-group-item">
+            <a href="topics/<%= post.topicId %>/posts/<%= post.id %>/flairs/<%= flair.id %>">
+              <button style="background: <%= flair.color %>">
+                <%= flair.name %>
+              </button>
+            </a>
+          </li>
+        <% }) %>
+      </ul>
+
+      <a href="/topics/<%= post.topicId %>/posts/<%= post.id %>/flairs/new" class="btn btn-success">New Flair</a>
+
     </main>
 
     <% include ../static/partials/baseScripts.ejs %>
