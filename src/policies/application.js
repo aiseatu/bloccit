@@ -5,8 +5,12 @@ module.exports = class ApplicationPolicy {
     this.record = record;
   }
 
+  _isMember() {
+    return this.user && this.user.role == "member";
+  }
+
   _isOwner() {
-    return this.record && (this.record.userId == this.user.id);
+    return this.user&& this.user.role == "owner";
   }
 
   _isAdmin() {
