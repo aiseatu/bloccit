@@ -225,26 +225,37 @@ describe("routes : posts", () => {
   describe("Owner user performing CRUD actions for post", () => {
 
     beforeEach((done) => {
-      User.create({
-        email: "owner@example.com",
-        password: "654321",
-        role: "owner"
-      })
-      .then((user) => {
-        request.get({
-          url: "http://localhost:3000/auth/fake",
-          form: {
-            role: user.role,
-            userId: user.id,
-            email: user.email
-          }
-        },
-          (err, res, body) => {
-           done();
-          }
-        );
+      request.get({
+        url: "http://localhost:3000/auth/fake",
+        form: {
+          role: "member",
+          userId: 1,
+        }
       });
+      done();
     });
+
+    // beforeEach((done) => {
+    //   User.create({
+    //     email: "owner@example.com",
+    //     password: "654321",
+    //     role: "owner"
+    //   })
+    //   .then((user) => {
+    //     request.get({
+    //       url: "http://localhost:3000/auth/fake",
+    //       form: {
+    //         role: user.role,
+    //         userId: user.id,
+    //         email: user.email
+    //       }
+    //     },
+    //       (err, res, body) => {
+    //         done();
+    //       }
+    //     );
+    //   });
+    // });
 
     //show
     describe("GET /topics/:topicId/posts/:id", () => {
@@ -263,6 +274,9 @@ describe("routes : posts", () => {
     describe("POST /topics/:topicId/posts/:id/destroy", () => {
 
       it("should delete the post with the associated ID", (done) => {
+        // console.log("DEBUG: post_spec L266");
+        // console.log("Attempting to Delete Post");
+
         expect(this.post.id).toBe(1);
         request.post(`${base}/${this.topic.id}/posts/${this.post.id}/destroy`, (err, res, body) => {
           Post.findById(1)

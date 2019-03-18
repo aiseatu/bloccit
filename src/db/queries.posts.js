@@ -28,12 +28,18 @@ module.exports = {
     .then((post) => {
       const authorized = new Authorizer(req.user, post).destroy();
       if(authorized){
+        // console.log("DEBUG: queries.post.js #deletePost SUCCESS");
+        // console.log(authorized);
+        // console.log("------------\n\n");
         post.destroy()
         .then((res) => {
           callback(null, post);
         })
       } else {
-        req.flash("notice", "You are not authorized to do that.");
+        // console.log("DEBUG: queries.post.js #deletePost FAIL");
+        // console.log(authorized);
+        // console.log("------------\n\n");
+        // req.flash("notice", "You are not authorized to do that.");
         callback(401)
       }
     })
