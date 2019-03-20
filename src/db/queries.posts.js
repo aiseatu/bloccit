@@ -1,6 +1,8 @@
 const Post = require("./models").Post;
 const Topic = require("./models").Topic;
 const Authorizer = require("../policies/post");
+const Comment = require("./models").Comment;
+const User = require("./models").User;
 
 module.exports = {
   addPost(newPost, callback){
@@ -14,7 +16,13 @@ module.exports = {
   },
 
   getPost(id, callback){
-    return Post.findById(id)
+    return Post.findById(id, {
+      include: [
+        {model: Comment, as: "comments", include: [
+          {model: User}
+        ]}
+      ]
+    })
     .then((post) => {
       callback(null, post);
     })
@@ -39,7 +47,7 @@ module.exports = {
         // console.log("DEBUG: queries.post.js #deletePost FAIL");
         // console.log(authorized);
         // console.log("------------\n\n");
-        // req.flash("notice", "You are not authorized to do that.");
+        req.flash("notice", "You are not authorized to do that.");
         callback(401)
       }
     })
