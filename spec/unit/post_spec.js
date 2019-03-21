@@ -179,7 +179,30 @@ describe("Post", () => {
       .then((vote) => {
         this.post.hasUpvoteFor(this.user.id)
         .then((res) => {
-          expect(res).toBe(True);
+          expect(res).toBe(true);
+          done();
+        })
+        .catch((err) => {
+          console.log(err);
+          done();
+        });
+      });
+    });
+
+  });
+
+  describe("#hasDownvoteFor()", () => {
+
+    it("should return true if the user with matching userId has an downvote for the post", (done) => {
+      Vote.create({
+        value: -1,
+        userId: this.user.id,
+        postId: this.post.id
+      })
+      .then((vote) => {
+        this.post.hasDownvoteFor(this.user.id)
+        .then((res) => {
+          expect(res).toBe(true);
           done();
         })
         .catch((err) => {

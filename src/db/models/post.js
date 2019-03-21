@@ -50,25 +50,36 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   Post.prototype.hasUpvoteFor = function(userId){
-    const votes = this.getVotes();
-    console.log(votes);
-    const userVote = votes.filter(v => v.userId === userId);
 
-    if(userVote && userVote.value === 1){
-      return true;
-    } else {
-      return false;
-    }
+    return this.getVotes({where: {userId, postId: this.id, value: 1}})
+            .then((votes) => {
+              if(votes.length>0){
+                return true;
+              } else {
+                return false;
+              }
+            });
+    // const votes = this.getVotes();
+    // console.log(votes);
+    // const userVote = votes.filter(v => v.userId === userId);
+    //
+    // if(userVote && userVote.value === 1){
+    //   return true;
+    // } else {
+    //   return false;
+    // }
   };
 
-  // Post.prototype.hasDownvoteFor = function(userId){
-  //   const userVote = this.votes.filter(v => v.userId = userId);
-  //   if(userVote && userVote.value === -1){
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // };
+  Post.prototype.hasDownvoteFor = function(userId){
+    return this.getVotes({where: {userId, postId: this.id, value: -1}})
+            .then((votes) => {
+              if(votes.length>0){
+                return true;
+              } else {
+                return false;
+              }
+            });
+  };
 
   return Post;
 };
