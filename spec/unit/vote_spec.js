@@ -115,6 +115,44 @@ describe("Vote", () => {
       });
     });
 
+    it("should not create a vote with a value other than 1 or -1", (done) => {
+      Vote.create({
+        value: 0,
+        postId: this.post.id,
+        userId: this.user.id
+      })
+      .then((vote) => {
+        done();
+      })
+      .catch((err) => {
+        //console.log(err.message);
+        expect(err.message).toContain("Validation error: Validation isIn on value failed");
+        done();
+      });
+    });
+
+    it("should not create more than one vote on a post from same user", (done) => {
+      Vote.create({
+        value: 1,
+        postId: this.post.id,
+        userId: this.user.id
+      }).then((vote) => {
+        Vote.create({
+          value: 1,
+          postId: this.post.id,
+          userId: this.user.id
+        })
+        .then((vote) => {
+          expect(vote.value).toBe(1);
+          done();
+        })
+        .catch((err) => {
+          console.log(err);
+          done();
+        });
+      });
+    });
+
   });
 
   describe("#setUser()", () => {
@@ -205,7 +243,7 @@ describe("Vote", () => {
 
   });
 
-  describe("#getPost", () => {
+  describe("#getPost()", () => {
 
     it("should return the associated post", (done) => {
       Vote.create({
@@ -227,5 +265,6 @@ describe("Vote", () => {
     });
 
   });
+
 
 });

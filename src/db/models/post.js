@@ -42,11 +42,30 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   Post.prototype.getPoints = function(){
+    console.log(this.votes);
     if(this.votes.length === 0) return 0
     return this.votes
       .map((v) => { return v.value })
       .reduce((prev, next) => { return prev + next });
   };
-  
+
+  // Post.prototype.hasUpvoteFor = function(userId){
+  //   const userVote = this.votes.filter(v => v.userId === userId);
+  //   if(userVote && userVote.value === 1){
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // };
+
+  // Post.prototype.hasDownvoteFor = function(userId){
+  //   const userVote = this.votes.filter(v => v.userId = userId);
+  //   if(userVote && userVote.value === -1){
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // };
+
   return Post;
 };
