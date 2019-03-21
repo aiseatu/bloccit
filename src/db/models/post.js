@@ -42,21 +42,24 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   Post.prototype.getPoints = function(){
-    console.log(this.votes);
-    if(this.votes.length === 0) return 0
-    return this.votes
+    const votes = this.getVotes();
+    if(!votes || votes.length === 0) return 0
+    return votes
       .map((v) => { return v.value })
       .reduce((prev, next) => { return prev + next });
   };
 
-  // Post.prototype.hasUpvoteFor = function(userId){
-  //   const userVote = this.votes.filter(v => v.userId === userId);
-  //   if(userVote && userVote.value === 1){
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // };
+  Post.prototype.hasUpvoteFor = function(userId){
+    const votes = this.getVotes();
+    console.log(votes);
+    const userVote = votes.filter(v => v.userId === userId);
+
+    if(userVote && userVote.value === 1){
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   // Post.prototype.hasDownvoteFor = function(userId){
   //   const userVote = this.votes.filter(v => v.userId = userId);

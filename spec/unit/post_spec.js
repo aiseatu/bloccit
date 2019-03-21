@@ -26,7 +26,7 @@ describe("Post", () => {
            posts: [{
              title: "My first visit to Proxima Centauri b",
              body: "I saw some rocks.",
-             userId: this.user.id
+             userId: this.user.id,
            }]
         }, {
           include: {
@@ -152,6 +152,8 @@ describe("Post", () => {
         postId: this.post.id
       })
       .then((vote) => {
+        expect(vote.postId).toBe(this.post.id);
+
         this.post.getPoints()
         .then((points) => {
           expect(points).toBe(1);
@@ -166,27 +168,27 @@ describe("Post", () => {
 
   });
 
-  // describe("#hasUpvoteFor()", () => {
-  //
-  //   it("should return true if the user with matching userId has an upvote for the post", (done) => {
-  //     Vote.create({
-  //       value: 1,
-  //       userId: this.user.id,
-  //       postId: this.post.id
-  //     })
-  //     .then(() => {
-  //       this.post.hasUpvoteFor(this.user.id)
-  //       .then((result) => {
-  //         expect(result).toBe(True);
-  //         done();
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //         done();
-  //       });
-  //     });
-  //   });
-  //
-  // });
+  describe("#hasUpvoteFor()", () => {
+
+    it("should return true if the user with matching userId has an upvote for the post", (done) => {
+      Vote.create({
+        value: 1,
+        userId: this.user.id,
+        postId: this.post.id
+      })
+      .then((vote) => {
+        this.post.hasUpvoteFor(this.user.id)
+        .then((res) => {
+          expect(res).toBe(True);
+          done();
+        })
+        .catch((err) => {
+          console.log(err);
+          done();
+        });
+      });
+    });
+
+  });
 
 });
