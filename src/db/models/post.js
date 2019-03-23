@@ -39,6 +39,11 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "postId",
       as: "votes"
     });
+
+    Post.hasMany(models.Favorite, {
+      foreignKey: "postId",
+      as: "favorites"
+    });
   };
 
   Post.prototype.getPoints = function(){
@@ -47,6 +52,6 @@ module.exports = (sequelize, DataTypes) => {
       .map((v) => { return v.value })
       .reduce((prev, next) => { return prev + next });
   };
-  
+
   return Post;
 };
