@@ -75,7 +75,7 @@ describe("routes: votes", () => {
         request.get(options, (err, res, body) => {
           Vote.findOne({
             where: {
-              userId: this.user.id,
+              userId: 0,
               postId: this.post.id
             }
           })
@@ -170,7 +170,7 @@ describe("routes: votes", () => {
       });
 
     });
-    
+
   });
 
 });
