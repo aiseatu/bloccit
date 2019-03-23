@@ -3,6 +3,7 @@ const Topic = require("./models").Topic;
 const Authorizer = require("../policies/post");
 const Comment = require("./models").Comment;
 const User = require("./models").User;
+const Vote = require("./models").Vote;
 
 module.exports = {
   addPost(newPost, callback){

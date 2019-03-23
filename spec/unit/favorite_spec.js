@@ -47,7 +47,7 @@ describe("Favorite", () => {
             postId: this.post.id
           })
           .then((res) => {
-            this.comment =res;
+            this.comment = res;
             done();
           })
           .catch((err) => {
@@ -67,8 +67,8 @@ describe("Favorite", () => {
 
     it("should create a favorite for a post on a user", (done) => {
       Favorite.create({
-        postId: this.post.id,
-        userId: this.user.id
+        userId: this.user.id,
+        postId: this.post.id
       })
       .then((favorite) => {
         expect(favorite.postId).toBe(this.post.id);
@@ -101,8 +101,8 @@ describe("Favorite", () => {
 
     it("should associate a favorite and a user together", (done) => {
       Favorite.create({
-        postId: this.post.id,
-        userId: this.user.id
+        userId: this.user.id,
+        postId: this.post.id
       })
       .then((favorite) => {
         this.favorite = favorite;
@@ -154,11 +154,13 @@ describe("Favorite", () => {
 
     it("should associate a post and a favorite together", (done) => {
       Favorite.create({
-        postId: this.post.id,
-        userId: this.user.id
+        userId: this.user.id,
+        postId: this.post.id
       })
       .then((favorite) => {
         this.favorite = favorite;
+        //console.log(this.favorite.postId);
+        //console.log(favorite.postId);
         Post.create({
           title: "Dress code on Proxima b",
           body: "Spacesuit, space helmet, space boots, and space gloves",
@@ -190,7 +192,9 @@ describe("Favorite", () => {
         postId: this.post.id
       })
       .then((favorite) => {
-        favorite.getPost()
+        this.favorite = favorite;
+        //console.log(this.favorite.postId);
+        this.favorite.getPost()
         .then((associatedPost) => {
           expect(associatedPost.title).toBe("My first visit to Proxima Centauri b");
           done();
